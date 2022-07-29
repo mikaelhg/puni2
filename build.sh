@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Build the binary
+
 JLATEXMATH_VERSION=${JLATEXMATH_VERSION:-'1.0.7'}
 PLANTUML_VERSION=${PLANTUML_VERSION:-'1.2022.6'}
 
@@ -15,5 +17,3 @@ native-image --auto-fallback --enable-http --enable-https \
   -H:IncludeResources="net/sourceforge/plantuml.*(png|svg|txt)$" \
   -cp jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar:./conf \
   net.sourceforge.plantuml.Run
-
-./plantuml-${PLANTUML_VERSION}-glibc-x86_64 -headless -o out-native PlantUML-master/*/*.puml
