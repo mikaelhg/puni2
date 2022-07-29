@@ -15,3 +15,9 @@ This project starts from scratch, since over the intervening two years, GraalVM
 has advanced significantly, requiring quite a bit less custom work for each
 application.
 
+## Usage
+
+```bash
+./run.sh
+./out/plantuml-1.2022.6-glibc-x86_64 -headless -help
+```

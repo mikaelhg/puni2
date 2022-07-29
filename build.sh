@@ -13,7 +13,8 @@ java -agentlib:native-image-agent=config-output-dir=conf/META-INF/native-image \
 native-image --auto-fallback --enable-http --enable-https \
   --report-unsupported-elements-at-runtime \
   -H:Name=plantuml-${PLANTUML_VERSION}-glibc-x86_64 \
-  -H:IncludeResources="stdlib/.*repx" \
+  -H:Path=./out \
+  -H:IncludeResources="stdlib/.*repx$" \
   -H:IncludeResources="net/sourceforge/plantuml.*(png|svg|txt)$" \
   -cp jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar:./conf \
   net.sourceforge.plantuml.Run
