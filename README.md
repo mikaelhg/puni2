@@ -20,4 +20,7 @@ application.
 ```bash
 ./run.sh
 ./out/plantuml-1.2022.6-glibc-x86_64 -headless -help
+
+PLANTUML_VERSION=1.2022.5 ./run.sh
+./out/plantuml-1.2022.5-glibc-x86_64 -headless -help
 ```
