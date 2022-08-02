@@ -24,3 +24,9 @@ application.
 PLANTUML_VERSION=1.2022.5 ./run.sh
 ./out/plantuml-1.2022.5-glibc-x86_64 -headless -help
 ```
+
+## Running the binary on Alpine
+
+```bash
+apk add gcompat libstdc++ fontconfig ttf-dejavu ttf-liberation graphviz
+```
