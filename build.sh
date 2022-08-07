@@ -7,8 +7,8 @@ PLANTUML_VERSION=${PLANTUML_VERSION:-'1.2022.6'}
 
 java -agentlib:native-image-agent=config-output-dir=conf/META-INF/native-image \
   -cp jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar \
-  net.sourceforge.plantuml.Run \
-    -headless -o out-java ./PlantUML-master/*/*.puml
+  net.sourceforge.plantuml.Run -headless -o /tmp/out \
+    ./PlantUML-master/*/*.puml ./scripts/tests/*.puml
 
 native-image --auto-fallback --enable-http --enable-https \
   --report-unsupported-elements-at-runtime \
