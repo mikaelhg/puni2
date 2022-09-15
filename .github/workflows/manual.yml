@@ -1,0 +1,20 @@
+name: Manual native build
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'PlantUML version to build'
+        default: '1.2022.7'
+        required: true
+
+jobs:
+
+  greet:
+    
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+    - name: Send greeting
+      run: echo "Hello ${{ github.event.inputs.version }}"
