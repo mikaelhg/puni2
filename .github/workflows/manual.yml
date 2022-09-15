@@ -29,8 +29,8 @@ jobs:
 
       - name: Install packages for the build
         run: |
-          apt-get -yqq update
-          apt-get -yqq install libfreetype-dev graphviz curl upx
+          sudo apt-get -yqq update
+          sudo apt-get -yqq install libfreetype-dev graphviz curl upx
 
           curl -sS -L -o plantuml-${PLANTUML_VERSION}.jar \
             https://repo1.maven.org/maven2/net/sourceforge/plantuml/plantuml/${PLANTUML_VERSION}/plantuml-${PLANTUML_VERSION}.jar
