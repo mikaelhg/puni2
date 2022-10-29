@@ -66,3 +66,10 @@ jobs:
       - name: Compress executable
         run: |
           upx -q -o ./out/plantuml-${PLANTUML_VERSION}-upx-x86_64 ./out/plantuml-${PLANTUML_VERSION}-glibc-x86_64
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: "${{ github.event.inputs.version }}"
+          files: |
+            ./out/plantuml-*-x86_64
