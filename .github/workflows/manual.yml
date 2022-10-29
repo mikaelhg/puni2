@@ -5,7 +5,7 @@ on:
     inputs:
       version:
         description: 'PlantUML version to build'
-        default: '1.2022.7'
+        default: '1.2022.12'
         required: true
 
 jobs:
@@ -23,8 +23,8 @@ jobs:
 
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.2.0'
-          java-version: '17'
+          version: '22.3.0'
+          java-version: '19'
           components: 'native-image'
 
       - name: Install packages for the build
