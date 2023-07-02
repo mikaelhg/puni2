@@ -23,9 +23,8 @@ jobs:
 
       - uses: graalvm/setup-graalvm@v1
         with:
-          version: '22.3.0'
-          java-version: '19'
-          components: 'native-image'
+          java-version: '20'
+          distribution: 'graalvm'
 
       - name: Install packages for the build
         run: |
