@@ -55,7 +55,8 @@ jobs:
             -H:Path=./out \
             -H:IncludeResources="stdlib/.*repx$" \
             -H:IncludeResources="net/sourceforge/plantuml.*(png|svg|txt)$" \
-            -cp jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar:./conf \
+            -H:ConfigurationFileDirectories=conf/META-INF/native-image \
+            -cp jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar \
             net.sourceforge.plantuml.Run
 
       - name: Test
