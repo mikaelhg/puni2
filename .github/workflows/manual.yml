@@ -50,6 +50,7 @@ jobs:
         run: |
           native-image -J-Xms6g -J-Xmx6g --auto-fallback --enable-http --enable-https \
             --report-unsupported-elements-at-runtime \
+            -H:+StaticExecutableWithDynamicLibC \
             -H:Name=plantuml-${PLANTUML_VERSION}-glibc-x86_64 \
             -H:Path=./out \
             -H:IncludeResources="stdlib/.*repx$" \
