@@ -78,4 +78,4 @@ jobs:
         with:
           tag_name: "${{ github.event.inputs.version }}"
           files: |
-            ./puni2-${PLANTUML_VERSION}.tar.gz
+            ./puni2-*.tar.gz
