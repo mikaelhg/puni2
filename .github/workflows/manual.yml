@@ -24,7 +24,7 @@ jobs:
       - uses: graalvm/setup-graalvm@v1
         with:
           java-version: '22'
-          distribution: 'graalvm'
+          distribution: 'liberica'
 
       - name: Install packages for the build
         run: |
@@ -68,9 +68,14 @@ jobs:
         run: |
           upx -q -o ./out/plantuml-${PLANTUML_VERSION}-upx-x86_64 ./out/plantuml-${PLANTUML_VERSION}-glibc-x86_64
 
+      - name: Package distribution
+        run: |
+          mv ./out ./puni2-${PLANTUML_VERSION}
+          tar cvfz ./puni2-${PLANTUML_VERSION}.tar.gz ./puni2-${PLANTUML_VERSION}
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
           tag_name: "${{ github.event.inputs.version }}"
           files: |
-            ./out/plantuml-*-x86_64
+            ./puni2-${PLANTUML_VERSION}
