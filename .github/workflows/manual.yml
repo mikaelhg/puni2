@@ -23,8 +23,8 @@ jobs:
 
       - uses: graalvm/setup-graalvm@v1
         with:
-          java-version: '21'
-          distribution: 'liberica'
+          java-version: '23'
+          distribution: 'graalvm'
 
       - name: Install packages for the build
         run: |
