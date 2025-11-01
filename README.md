@@ -15,6 +15,13 @@ This project starts from scratch, since over the intervening two years, GraalVM
 has advanced significantly, requiring quite a bit less custom work for each
 application.
 
+## NOTICE!
+
+This repository will likely not be updated in the future, due to the
+official PlantUML repository having gained GraalVM native-image CI/CD 
+pipeline scripts, and the maintainer having switched to 
+[d2](https://d2lang.com/) and [Mermaid](https://mermaid.js.org/).
+
 ## Usage
 
 ```bash
