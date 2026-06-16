@@ -22,6 +22,8 @@ official PlantUML repository having gained GraalVM native-image CI/CD
 pipeline scripts, and the maintainer having switched to 
 [d2](https://d2lang.com/) and [Mermaid](https://mermaid.js.org/).
 
+Get the binary from [plantuml releases](https://github.com/plantuml/plantuml/releases).
+
 ## Usage
 
 ```bash

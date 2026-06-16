@@ -19,11 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
-      - uses: graalvm/setup-graalvm@v1
+      - uses: graalvm/setup-graalvm@809afe62741147990fbf405045cd15e61bffedfe # v1.5.5
         with:
-          java-version: '23'
+          java-version: '25'
           distribution: 'graalvm'
 
       - name: Install packages for the build
@@ -74,7 +74,7 @@ jobs:
           tar cvfz ./puni2-${PLANTUML_VERSION}.tar.gz ./puni2-${PLANTUML_VERSION}
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
         with:
           tag_name: "${{ github.event.inputs.version }}"
           files: |
