@@ -5,7 +5,7 @@ on:
     inputs:
       version:
         description: 'PlantUML version to build'
-        default: '1.2024.4'
+        default: '1.2025.9'
         required: true
 
 jobs:
@@ -15,9 +15,12 @@ jobs:
     env:
       PLANTUML_VERSION: "${{ github.event.inputs.version }}"
       JLATEXMATH_VERSION: 1.0.7
-    
+
     runs-on: ubuntu-latest
-    
+
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
@@ -39,30 +42,49 @@ jobs:
 
           curl -sS -L -o - https://github.com/coni2k/PlantUML/archive/refs/heads/master.tar.gz | tar -zxf -
 
+      - name: Compile launcher
+        run: |
+          javac -d ./classes \
+            -cp jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar \
+            launcher/puni2/Main.java
+
       - name: Generate build configuration
         run: |
           java -agentlib:native-image-agent=config-output-dir=conf/META-INF/native-image \
-            -cp jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar \
-            net.sourceforge.plantuml.Run -headless -o /tmp/out \
+            -cp ./classes:jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar \
+            puni2.Main -headless -o /tmp/out \
               ./PlantUML-master/*/*.puml ./tests/*.puml || true
 
       - name: Build
         run: |
-          native-image -J-Xms6g -J-Xmx6g --auto-fallback --enable-http --enable-https \
-            --report-unsupported-elements-at-runtime \
+          # puni2.Main points java.home at the executable's directory, which
+          # must contain lib/ for AWT font setup to work
+          mkdir -p ./out/lib
+          native-image -J-Xms6g -J-Xmx6g --no-fallback --enable-http --enable-https \
+            -H:+UnlockExperimentalVMOptions \
             -H:+StaticExecutableWithDynamicLibC \
-            -H:Name=plantuml-${PLANTUML_VERSION}-glibc-x86_64 \
-            -H:Path=./out \
-            -H:IncludeResources="stdlib/.*repx$" \
+            -H:IncludeResources="stdlib/.*" \
             -H:IncludeResources="net/sourceforge/plantuml.*(png|svg|txt)$" \
             -H:ConfigurationFileDirectories=conf/META-INF/native-image \
-            -cp jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar \
-            net.sourceforge.plantuml.Run
+            -o ./out/plantuml-${PLANTUML_VERSION}-glibc-x86_64 \
+            -cp ./classes:jlatexmath-${JLATEXMATH_VERSION}.jar:plantuml-${PLANTUML_VERSION}.jar \
+            puni2.Main
 
       - name: Test
         run: |
+          # Some sample diagrams contain deliberate syntax errors, so the exit
+          # code is ignored, but every diagram must produce a non-empty image
           ./out/plantuml-${PLANTUML_VERSION}-glibc-x86_64 -headless -o /tmp/out2 \
             PlantUML-master/*/*.puml ./tests/*.puml || true
+          ls /tmp/out2 | wc -l
+          test "$(ls /tmp/out2 | wc -l)" -gt 250
+          test -z "$(find /tmp/out2 -size 0)"
+
+      - name: Bundle single-file executable
+        run: |
+          mkdir ./dist
+          ./bundle.sh ./out plantuml-${PLANTUML_VERSION}-glibc-x86_64 ./dist/plantuml-${PLANTUML_VERSION}-x86_64
+          ./dist/plantuml-${PLANTUML_VERSION}-x86_64 -headless -version
 
       - name: Compress executable
         run: |
@@ -71,11 +93,11 @@ jobs:
       - name: Package distribution
         run: |
           mv ./out ./puni2-${PLANTUML_VERSION}
-          tar cvfz ./puni2-${PLANTUML_VERSION}.tar.gz ./puni2-${PLANTUML_VERSION}
+          tar cvfz ./dist/puni2-${PLANTUML_VERSION}.tar.gz ./puni2-${PLANTUML_VERSION}
 
       - name: Release
         uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
         with:
           tag_name: "${{ github.event.inputs.version }}"
           files: |
-            ./puni2-*.tar.gz
+            ./dist/*
