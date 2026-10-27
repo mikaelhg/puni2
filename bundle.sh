@@ -21,9 +21,13 @@ OUTPUT=${3:?output file}
 PAYLOAD=$(mktemp)
 trap 'rm -f "${PAYLOAD}"' EXIT
 
+# Only this executable and its runtime files, not other builds in the directory
+LIBS=("${SRC_DIR}"/*.so)
+LIBS=("${LIBS[@]##*/}")
+
 # Deterministic tarball so the cache key only changes when the contents do
 tar -C "${SRC_DIR}" --sort=name --owner=0 --group=0 --numeric-owner --mtime=@0 \
-  -cf - . | gzip -9n > "${PAYLOAD}"
+  -cf - "${EXE_NAME}" lib "${LIBS[@]}" | gzip -9n > "${PAYLOAD}"
 
 HASH=$(sha256sum "${PAYLOAD}" | cut -c1-16)
 

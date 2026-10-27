@@ -4,3 +4,5 @@
 PlantUML-master/
 tests/
 /*.jar
+/classes
+/dist

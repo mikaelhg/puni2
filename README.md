@@ -26,12 +26,26 @@ Get the binary from [plantuml releases](https://github.com/plantuml/plantuml/rel
 
 ## Usage
 
+Building locally needs [mise](https://mise.jdx.dev/), which provides the
+Oracle GraalVM pinned in `mise.toml`, and a Debian or Ubuntu system for
+the packages `install.sh` installs. `run.sh` installs, downloads, builds
+and tests in the repository directory, the same way the GitHub workflow
+does.
+
 ```bash
 ./run.sh
-./out/plantuml-1.2022.6-glibc-x86_64 -headless -help
+./out/plantuml-1.2026.9-glibc-x86_64 -headless -help
 
-PLANTUML_VERSION=1.2022.5 ./run.sh
-./out/plantuml-1.2022.5-glibc-x86_64 -headless -help
+PLANTUML_VERSION=1.2025.9 ./run.sh
+./out/plantuml-1.2025.9-glibc-x86_64 -headless -help
+```
+
+The executable needs the `.so` files and the empty `lib/` directory next
+to it. To pack them into a single self-extracting file:
+
+```bash
+./bundle.sh out plantuml-1.2026.9-glibc-x86_64 plantuml
+./plantuml -headless -help
 ```
 
 ## Running the binary on Alpine
