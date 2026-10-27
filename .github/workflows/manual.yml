@@ -60,7 +60,10 @@ jobs:
           # puni2.Main points java.home at the executable's directory, which
           # must contain lib/ for AWT font setup to work
           mkdir -p ./out/lib
-          native-image -J-Xms6g -J-Xmx6g --no-fallback --enable-http --enable-https \
+          # G1 rather than the default Serial GC: about 2x faster for typical
+          # 1-20 diagram runs, and the intermittent Serial GC crash ("No
+          # reference map information found", ~0.6% of runs) was not seen with G1
+          native-image -J-Xms6g -J-Xmx6g --gc=G1 --no-fallback --enable-http --enable-https \
             -H:+UnlockExperimentalVMOptions \
             -H:+StaticExecutableWithDynamicLibC \
             -H:IncludeResources="stdlib/.*" \
